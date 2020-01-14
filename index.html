@@ -2373,7 +2373,7 @@ function tri(x1, y1, x2, y2, x3, y3, fc){
 
 
 		/* COMPILE CODE */
-
+		let history = [];
 		function recompile(force){
 			let currline = editor.getSelectionRange().start.row;
 			let currCode = editor.session.getLine(currline);
@@ -2401,6 +2401,17 @@ function tri(x1, y1, x2, y2, x3, y3, fc){
 				if(validCode){
 					if(editor.getValue().indexOf('function setup()') != -1){ // check setup exists
 						// buildSketch(); // 
+						let o = {source: editor.session.getLines(0, editor.session.getLength()).join('\n'),
+							time: timeStamp()};
+						if (history.length > 0) {
+							if (history[history.length - 1].source != o.source) {
+								history.push(o);
+							}
+						}
+						else {
+							history.push(o);
+						}
+						console.log(history);
 						updateBackground();
 						if(settings.cocoding.active){
 							if(settings.cocoding.sync){
